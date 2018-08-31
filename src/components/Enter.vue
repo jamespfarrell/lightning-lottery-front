@@ -4,13 +4,13 @@
         <p>
             <input type="text" value=""/>
         </p>
-        <v-btn @click="getInvoice($event, '10000')"></v-btn>
+        <button @click="getInvoice($event, '10000')">Enter</button>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'HelloWorld',
+        name: 'Enter',
         props: {
             msg: String
         }
