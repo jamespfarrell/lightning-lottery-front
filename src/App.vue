@@ -6,13 +6,45 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+//import HelloWorld from './components/HelloWorld.vue'
+import Enter from './components/Enter.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
-  }
+    Enter
+  },
+    methods: {
+        getInvoice: function (event, amount) {
+            axios.post(`http://localhost:8081/addinvoice`, {body: '"value" : ' + amount})
+                .then(response => {
+                    console.log(response.data.payment_request)
+                    this.invoice = response.data.payment_request
+                    this.value_invoice = amount
+                })
+                .catch(e => {
+                    this.errors.push(e)
+                })
+        },
+        getIfPaidSomething: function (event) {
+            axios.post(`http://localhost:8081/settledinvoice`, {body: '"payment_request" : "' + this.invoice + '"'})
+                .then(response => {
+                    if (response.data) {
+                        this.simpleNotification()
+                    }
+                })
+                .catch(e => {
+                    this.errors.push(e)
+                })
+        },
+        simpleNotification: function (event) {
+            this.$snotify.success('Payment received! Thanks!', {
+                timeout: 2000,
+                showProgressBar: false,
+                closeOnClick: true
+            })
+        }
+    },
 }
 </script>
 
